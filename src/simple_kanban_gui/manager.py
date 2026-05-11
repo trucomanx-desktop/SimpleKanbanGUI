@@ -1,6 +1,4 @@
 #!/usr/bin/python3
-
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Kanban Card Browser (Qt5)
@@ -37,13 +35,19 @@ from PyQt5.QtCore    import (Qt, QUrl)
 
 import simple_kanban_gui.about as about
 import simple_kanban_gui.modules.configure as configure 
-from simple_kanban_gui.desktop import create_desktop_file, create_desktop_directory, create_desktop_menu
-from simple_kanban_gui.modules.wabout  import show_about_window
+from simple_kanban_gui.desktop import create_desktop_file
+from simple_kanban_gui.desktop import create_desktop_directory
+from simple_kanban_gui.desktop import create_desktop_menu
+from simple_kanban_gui.modules.wabout    import show_about_window
+from simple_kanban_gui.modules.resources import resource_path
 
 KANBAN_SUFFIX = ".kanban.json"
 
 # Info path
-INFO_PATH = os.path.join(os.path.expanduser("~"),".config",about.__package__,"info_path.json")
+INFO_PATH = os.path.join(   os.path.expanduser("~"),
+                            ".config",
+                            about.__package__,
+                            "info_path.json")
 
 DEFAULT_INFO_CONTENT =  {   "last_path": os.path.expanduser("~"),
                             "kanban_path": os.path.expanduser("~")
@@ -53,10 +57,11 @@ configure.verify_default_config(INFO_PATH,default_content=DEFAULT_INFO_CONTENT)
 
 INFO=configure.load_config(INFO_PATH)
 
-
-
 # Path to config file
-CONFIG_PATH = os.path.join(os.path.expanduser("~"),".config",about.__package__,"config_manager.json")
+CONFIG_PATH = os.path.join( os.path.expanduser("~"),
+                            ".config",
+                            about.__package__,
+                            "config_manager.json")
 
 DEFAULT_CONTENT={   "toolbar_home": "Home",
                     "toolbar_home_tooltip": "Go to home directory",
@@ -68,7 +73,7 @@ DEFAULT_CONTENT={   "toolbar_home": "Home",
                     "toolbar_new_folder_tooltip": "Create a new folder in the current directory",
                     "toolbar_new_card": "New card",
                     "toolbar_new_card_tooltip": "Create a new card in the current directory",
-                    "toolbar_set_kanban": "Set kanban",
+                    "toolbar_set_kanban": "Set kanban dir.",
                     "toolbar_set_kanban_tooltip": "Set the kanban directory",
                     "toolbar_go_kanban": "Go to kanban",
                     "toolbar_go_kanban_tooltip": "Go to kanban directory",
@@ -493,8 +498,7 @@ class MainWindow(QMainWindow):
 
         ## Icon
         # Get base directory for icons
-        base_dir_path = os.path.dirname(os.path.abspath(__file__))
-        self.icon_path = os.path.join(base_dir_path, 'icons', 'logo.png')
+        self.icon_path = resource_path('icons', 'logo.png')
         self.setWindowIcon(QIcon(self.icon_path)) 
 
         # ---------------- Toolbar (apenas ações) ---------------- #
@@ -540,31 +544,41 @@ class MainWindow(QMainWindow):
         self.toolbar.addAction(act_gokanban)
         
         # Home
-        act_home = QAction(QIcon.fromTheme("go-home"), CONFIG["toolbar_home"], self)
+        act_home = QAction( QIcon(resource_path('icons', 'home_folder.png')), 
+                            CONFIG["toolbar_home"], 
+                            self)
         act_home.setToolTip(CONFIG["toolbar_home_tooltip"])
         act_home.triggered.connect(self.goto_home)
         self.toolbar.addAction(act_home)
 
         # Up
-        act_up = QAction(QIcon.fromTheme("go-up"), CONFIG["toolbar_up"], self)
+        act_up = QAction(   QIcon(resource_path('icons', 'go-up.png')), 
+                            CONFIG["toolbar_up"], 
+                            self)
         act_up.setToolTip(CONFIG["toolbar_up_tooltip"])
         act_up.triggered.connect(self.go_up)
         self.toolbar.addAction(act_up)
 
         # Refresh
-        act_refresh = QAction(QIcon.fromTheme("view-refresh"), CONFIG["toolbar_refresh"], self)
+        act_refresh = QAction(  QIcon(resource_path('icons', 'emblem-synchronizing.png')), 
+                                CONFIG["toolbar_refresh"], 
+                                self)
         act_refresh.setToolTip(CONFIG["toolbar_refresh_tooltip"])
         act_refresh.triggered.connect(self.refresh)
         self.toolbar.addAction(act_refresh)
 
         # Criar diretório
-        act_newdir = QAction(QIcon.fromTheme("folder-new"), CONFIG["toolbar_new_folder"], self)
+        act_newdir = QAction(   QIcon(resource_path('icons', 'new_folder.png')), 
+                                CONFIG["toolbar_new_folder"], 
+                                self)
         act_newdir.setToolTip(CONFIG["toolbar_new_folder_tooltip"])
         act_newdir.triggered.connect(self.create_new_dir)
         self.toolbar.addAction(act_newdir)
 
         # Criar card
-        act_newcard = QAction(QIcon.fromTheme("document-new"), CONFIG["toolbar_new_card"], self)
+        act_newcard = QAction(  QIcon(resource_path('icons', 'new_file.png')), 
+                                CONFIG["toolbar_new_card"], 
+                                self)
         act_newcard.setToolTip(CONFIG["toolbar_new_card_tooltip"])
         act_newcard.triggered.connect(self.create_new_card)
         self.toolbar.addAction(act_newcard)
@@ -575,26 +589,32 @@ class MainWindow(QMainWindow):
         self.toolbar.addWidget(spacer)
         
         # Set kanban
-        act_setkanban = QAction(QIcon.fromTheme("go-jump"), CONFIG["toolbar_set_kanban"], self)
+        act_setkanban = QAction(QIcon(resource_path('icons', 'download.png')), 
+                                CONFIG["toolbar_set_kanban"], 
+                                self)
         act_setkanban.setToolTip(CONFIG["toolbar_set_kanban_tooltip"])
         act_setkanban.triggered.connect(self.set_kanban_path)
         self.toolbar.addAction(act_setkanban)
         
         #
-        self.configure_action = QAction(QIcon.fromTheme("document-properties"), CONFIG["toolbar_configure"], self)
+        self.configure_action = QAction(QIcon(resource_path('icons', 'text-configure.png')), 
+                                        CONFIG["toolbar_configure"], 
+                                        self)
         self.configure_action.setToolTip(CONFIG["toolbar_configure_tooltip"])
         self.configure_action.triggered.connect(self.open_configure_editor)
         self.toolbar.addAction(self.configure_action)
         
         #
         self.coffee_action = QAction(CONFIG["toolbar_coffee"], self)
-        self.coffee_action.setIcon(QIcon.fromTheme("emblem-favorite"))
+        self.coffee_action.setIcon(QIcon(resource_path('icons', 'emote-love.png')))
         self.coffee_action.setToolTip(CONFIG["toolbar_coffee_tooltip"])
         self.coffee_action.triggered.connect(self.on_coffee_action_click)
         self.toolbar.addAction(self.coffee_action)
         
         #
-        self.about_action = QAction(QIcon.fromTheme('help-about'), CONFIG["toolbar_about"], self)
+        self.about_action = QAction(QIcon(resource_path('icons', 'status_help.png')), 
+                                    CONFIG["toolbar_about"], 
+                                    self)
         self.about_action.triggered.connect(self.open_about)
         self.about_action.setToolTip(CONFIG["toolbar_about_tooltip"])
         self.toolbar.addAction(self.about_action)

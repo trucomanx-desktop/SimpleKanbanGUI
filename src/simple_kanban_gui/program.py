@@ -15,14 +15,19 @@ from PyQt5.QtGui import QFontMetrics, QDesktopServices
 from PyQt5 import QtGui
 
 
-
 import simple_kanban_gui.about as about
 import simple_kanban_gui.modules.configure as configure 
-from simple_kanban_gui.desktop import create_desktop_file, create_desktop_directory, create_desktop_menu
-from simple_kanban_gui.modules.wabout  import show_about_window
+from simple_kanban_gui.desktop import create_desktop_file
+from simple_kanban_gui.desktop import create_desktop_directory
+from simple_kanban_gui.desktop import create_desktop_menu
+from simple_kanban_gui.modules.wabout    import show_about_window
+from simple_kanban_gui.modules.resources import resource_path
 
 # Path to config file
-CONFIG_PATH = os.path.join(os.path.expanduser("~"),".config",about.__package__,"config.json")
+CONFIG_PATH = os.path.join( os.path.expanduser("~"),
+                            ".config",
+                            about.__package__,
+                            "config.json")
 
 DEFAULT_CONTENT={   "toolbar_new_kanban": "New kanban",
                     "toolbar_new_kanban_tooltip": "New kanban window",
@@ -169,17 +174,17 @@ class ColumnWidget(QFrame):
         self.title_edit.returnPressed.connect(self.on_title_enter)
 
         self.add_btn = QPushButton()
-        self.add_btn.setIcon(QIcon.fromTheme("list-add"))
+        self.add_btn.setIcon(QIcon(resource_path('icons', 'button_add_green.png')))
         self.add_btn.setToolTip(CONFIG["board_new_note"])
         self.add_btn.clicked.connect(lambda: self.add_note())
 
         self.remove_btn = QPushButton()
-        self.remove_btn.setIcon(QIcon.fromTheme("edit-delete"))
+        self.remove_btn.setIcon(QIcon(resource_path('icons', 'button_remove_red.png')))
         self.remove_btn.setToolTip(CONFIG["board_delete"])
         self.remove_btn.clicked.connect(self.remove_self)
         
         self.interchange_right_btn = QPushButton()
-        self.interchange_right_btn.setIcon(QIcon.fromTheme("go-next"))
+        self.interchange_right_btn.setIcon(QIcon(resource_path('icons', 'go-next.png')))
         self.interchange_right_btn.setToolTip(CONFIG["board_interchange_right"])
         self.interchange_right_btn.clicked.connect(self.interchange_right)
 
@@ -322,31 +327,45 @@ class KanbanWindow(QMainWindow):
 
         ## Icon
         # Get base directory for icons
-        base_dir_path = os.path.dirname(os.path.abspath(__file__))
-        self.icon_path = os.path.join(base_dir_path, 'icons', 'logo.png')
+        self.icon_path = resource_path('icons', 'logo.png')
         self.setWindowIcon(QIcon(self.icon_path)) 
 
         self.toolbar = QToolBar()
         self.toolbar.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         self.addToolBar(self.toolbar)
 
-        self.new_kanban_action = QAction(QIcon.fromTheme("document-new"), CONFIG["toolbar_new_kanban"], self)
+        #
+        self.new_kanban_action = QAction(   QIcon(resource_path('icons', 'new_file.png')), 
+                                            CONFIG["toolbar_new_kanban"], 
+                                            self)
         self.new_kanban_action.setToolTip(CONFIG["toolbar_new_kanban_tooltip"])
         self.new_kanban_action.triggered.connect(lambda: self.func_new_kanban())
 
-        self.add_column_action = QAction(QIcon.fromTheme("list-add"), CONFIG["toolbar_add_column"], self)
+        #
+        self.add_column_action = QAction(   QIcon(resource_path('icons', 'button_add_green.png')), 
+                                            CONFIG["toolbar_add_column"], 
+                                            self)
         self.add_column_action.setToolTip(CONFIG["toolbar_add_column_tooltip"])
         self.add_column_action.triggered.connect(lambda: self.add_column())
 
-        self.save_action = QAction(QIcon.fromTheme("document-save"), CONFIG["toolbar_save"], self)
+        #
+        self.save_action = QAction( QIcon(resource_path('icons', 'document-save.png')), 
+                                    CONFIG["toolbar_save"], 
+                                    self)
         self.save_action.setToolTip(CONFIG["toolbar_save_tooltip"])
         self.save_action.triggered.connect(self.save_to_file)
         
-        self.save_as_action = QAction(QIcon.fromTheme("document-save-as"), CONFIG["toolbar_save_as"], self)
+        #
+        self.save_as_action = QAction(  QIcon(resource_path('icons', 'document-save-as.png')), 
+                                        CONFIG["toolbar_save_as"], 
+                                        self)
         self.save_as_action.setToolTip(CONFIG["toolbar_save_as_tooltip"])
         self.save_as_action.triggered.connect(self.save_as_to_file)
 
-        self.load_action = QAction(QIcon.fromTheme("document-open"), CONFIG["toolbar_load"], self)
+        #
+        self.load_action = QAction( QIcon(resource_path('icons', 'open_file.png')), 
+                                    CONFIG["toolbar_load"], 
+                                    self)
         self.load_action.setToolTip(CONFIG["toolbar_load_tooltip"])
         self.load_action.triggered.connect(lambda: self.load_from_file(""))
 
@@ -355,17 +374,22 @@ class KanbanWindow(QMainWindow):
         spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
 
         #
-        self.configure_action = QAction(QIcon.fromTheme("document-properties"), CONFIG["toolbar_configure"], self)
+        self.configure_action = QAction(QIcon(resource_path('icons', 'text-configure.png')), 
+                                        CONFIG["toolbar_configure"], 
+                                        self)
         self.configure_action.setToolTip(CONFIG["toolbar_configure_tooltip"])
         self.configure_action.triggered.connect(self.open_configure_editor)
         
         #
-        self.about_action = QAction(QIcon.fromTheme("help-about"), CONFIG["toolbar_about"], self)
+        self.about_action = QAction(    QIcon(resource_path('icons', 'status_help.png')), 
+                                        CONFIG["toolbar_about"], 
+                                        self)
         self.about_action.setToolTip(CONFIG["toolbar_about_tooltip"])
         self.about_action.triggered.connect(self.open_about)
         
         # Coffee
-        self.coffee_action = QAction(QIcon.fromTheme("emblem-favorite"), CONFIG["toolbar_coffee"], self)
+        self.coffee_action = QAction(   QIcon(resource_path('icons', 'emote-love.png')), 
+                                        CONFIG["toolbar_coffee"], self)
         self.coffee_action.setToolTip(CONFIG["toolbar_coffee_tooltip"])
         self.coffee_action.triggered.connect(self.on_coffee_action_click)
 
