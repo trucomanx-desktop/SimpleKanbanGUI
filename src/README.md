@@ -21,6 +21,7 @@ To start, use the command below:
 
 ```bash
 simple-kanban-gui
+simple-kanban-manager
 ```
 ## 2. More information
 
