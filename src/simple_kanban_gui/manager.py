@@ -174,7 +174,7 @@ def open_with_default_app(path: str):
         return
     else:
         if path.lower().endswith(KANBAN_SUFFIX):
-            process = subprocess.Popen(["simple-kanban-gui", path])
+            process = subprocess.Popen([about.__program_name__, path])
             return
 # ------------------------------- Widgets UI -------------------------------- #
 
