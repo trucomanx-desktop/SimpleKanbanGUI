@@ -2,7 +2,7 @@
 
 A simple kanban graphic user interface
 
-![logo](https://raw.githubusercontent.com/trucomanx/SimpleKanbanGUI/main/screenshot.png)
+![logo](https://raw.githubusercontent.com/trucomanx-desktop/SimpleKanbanGUI/main/screenshot.png)
 
 ## 1. Installing
 
@@ -25,7 +25,7 @@ simple-kanban-manager
 ```
 ## 2. More information
 
-If you want more information go to [doc](https://github.com/trucomanx/SimpleKanbanGUI/blob/main/doc) directory.
+If you want more information go to [doc](https://github.com/trucomanx-desktop/SimpleKanbanGUI/blob/main/doc) directory.
 
 ## 3. Buy me a coffee
 

@@ -20,7 +20,7 @@ simple-kanban-gui
 Installing `simple-kanban-gui` program
 
 ```bash
-git clone https://github.com/trucomanx/SimpleKanbanGUI.git
+git clone https://github.com/trucomanx-desktop/SimpleKanbanGUI.git
 cd SimpleKanbanGUI
 pip install -r requirements.txt
 cd src
@@ -31,6 +31,7 @@ Using:
 
 ```bash
 simple-kanban-gui
+simple-kanban-manager
 ```
 
 ## Uninstall
